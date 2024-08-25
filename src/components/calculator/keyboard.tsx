@@ -1,62 +1,64 @@
-const keyboardBasicsValues = [
-  '7',
-  '8',
-  '9',
-  '*',
-  '/',
-  '4',
-  '5',
-  '6',
-  '-',
-  '(',
-  '1',
-  '2',
-  '3',
-  '+',
-  ')',
-  '.',
-  '0',
-  'del',
-  'ac',
-  '=',
-] as const
+import { cva } from 'class-variance-authority'
 
-const keyboardAdvancedValues = [
-  'sin',
-  'cos',
-  'ln',
-  'log',
-  'tan',
-  'π',
-  'e',
-  '^',
-  '!',
-  '√',
-] as const
+import { useCalculator } from '@/hooks/useCalculator'
+import { cn } from '@/lib/utils'
+import { advancedKeyValues, basicsKeysValues } from '@/utils/constants'
+
+const keyboardVariants = cva(
+  'flex items-center justify-center text-xl hover:font-bold transition-colors ease-in-out text-stone-600 hover:text-stone-950 dark:text-stone-500 dark:hover:text-stone-100',
+  {
+    variants: {
+      variant: {
+        default: 'rounded-md',
+        equal: ' rounded-md hover:bg-sky-500/70 ',
+        delete: ' rounded-md hover:bg-rose-500/70 ',
+        clear: ' rounded-md hover:bg-stone-500/70',
+      },
+    },
+    defaultVariants: {
+      variant: 'default',
+    },
+  },
+)
 
 export function Keyboard() {
+  const { handleClickButton } = useCalculator()
+
   return (
-    <section className="grid-rows-smallApp lg:grid-cols-largeApp grid h-full w-full flex-1 overflow-hidden lg:grid-rows-1">
-      <div className="grid h-full w-full grid-cols-5 lg:grid-cols-2 lg:grid-rows-5">
-        {keyboardAdvancedValues.map((value, index) => (
+    <section className="grid h-full w-full flex-1 grid-rows-smallApp overflow-hidden lg:grid-cols-largeApp lg:grid-rows-1">
+      <div className="grid h-full w-full grid-cols-5 p-4 lg:grid-cols-2 lg:grid-rows-5">
+        {advancedKeyValues.map((value, index) => (
           <button
             key={index}
-            className="flex items-center justify-center p-1 text-xl text-stone-800 hover:text-stone-950 dark:text-stone-400 dark:hover:text-stone-300"
+            className={cn(keyboardVariants())}
+            onClick={() => handleClickButton(value)}
           >
             {value}
           </button>
         ))}
       </div>
       <div className="h-px w-full rounded-md bg-stone-500 lg:h-full lg:w-px" />
-      <div className="row-span-2 grid h-full w-full grid-cols-5 lg:col-span-2">
-        {keyboardBasicsValues.map((value, index) => (
-          <button
-            key={index}
-            className="flex items-center justify-center p-1 text-2xl text-stone-800 hover:text-stone-950 dark:text-stone-400 dark:hover:text-stone-300"
-          >
-            {value}
-          </button>
-        ))}
+      <div className="row-span-2 grid h-full w-full grid-cols-5 p-4 lg:col-span-2">
+        {basicsKeysValues.map((value, index) => {
+          const equalVariant = value === '=' ? 'equal' : undefined
+          const deleteVariant = value === 'del' ? 'delete' : undefined
+          const clearVariant = value === 'ac' ? 'clear' : undefined
+
+          return (
+            <button
+              key={index}
+              className={cn(
+                keyboardVariants(),
+                keyboardVariants({ variant: equalVariant }),
+                keyboardVariants({ variant: deleteVariant }),
+                keyboardVariants({ variant: clearVariant }),
+              )}
+              onClick={() => handleClickButton(value)}
+            >
+              {value}
+            </button>
+          )
+        })}
       </div>
     </section>
   )

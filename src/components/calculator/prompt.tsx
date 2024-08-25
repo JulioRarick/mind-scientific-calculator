@@ -1,8 +1,15 @@
-export function Prompt() {
+interface PromptProps {
+  expression: string
+  result: string
+}
+
+export function Prompt({ expression, result }: PromptProps) {
   return (
-    <section className="grid w-full grid-rows-[min-content_max-content] py-3 text-end">
-      <h2 className="pb-2 font-semibold text-stone-500">expression</h2>
-      <p className="text-4xl font-bold">result</p>
+    <section className="flex h-20 w-full flex-col items-end justify-end pb-3 text-end">
+      <p className="h-2/5 w-full pb-2 font-semibold text-stone-500">
+        {expression}
+      </p>
+      <p className="text-5xl font-bold">{result}</p>
     </section>
   )
 }
