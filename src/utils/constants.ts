@@ -1,5 +1,3 @@
-import { MathJsInstance } from 'mathjs'
-
 export enum SpecialOperators {
   DELETE = 'del',
   CLEAR = 'ac',
@@ -28,17 +26,14 @@ export enum AdvancedOperators {
   E = 'e',
 }
 
-export const advancedOperatorFunctions: Record<
-  AdvancedOperators,
-  keyof MathJsInstance
-> = {
+export const advancedOperatorFunctions = {
   [AdvancedOperators.SIN]: 'sin',
   [AdvancedOperators.COS]: 'cos',
   [AdvancedOperators.TAN]: 'tan',
   [AdvancedOperators.LN]: 'log',
   [AdvancedOperators.LOG]: 'log10',
   [AdvancedOperators.FACTORIAL]: 'factorial',
-  [AdvancedOperators.POWER]: 'pow',
+  [AdvancedOperators.POWER]: '^',
   [AdvancedOperators.SQUARE_ROOT]: 'sqrt',
   [AdvancedOperators.PI]: 'pi',
   [AdvancedOperators.E]: 'e',
